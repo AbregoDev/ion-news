@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
     IonHeader,
     IonToolbar,
@@ -7,8 +7,13 @@ import {
     IonContent,
     IonSegment,
     IonSegmentButton,
-    IonLabel
+    IonLabel,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent
 } from '@ionic/angular/standalone';
+import { ArticlesComponent } from 'src/app/components/articles/articles.component';
+import { Article } from 'src/app/interfaces/news.interface';
+import { NewsService } from 'src/app/services/news.service';
 
 @Component({
     selector: 'app-tab2',
@@ -24,10 +29,14 @@ import {
         IonSegment,
         IonSegmentButton,
         IonLabel,
+        IonInfiniteScroll,
+        IonInfiniteScrollContent,
+        ArticlesComponent,
     ]
 })
-export class Tab2Page {
+export class Tab2Page implements OnInit {
 
+    @ViewChild(IonInfiniteScroll, { static: true }) infiniteScroll!: IonInfiniteScroll;
     categories: readonly string[] = [
         'business',
         'entertainment',
@@ -38,10 +47,36 @@ export class Tab2Page {
         'technology',
     ];
     selectedCategory: string = this.categories[0];
+    articles: Article[] = [];
 
-    constructor() { }
+    constructor(private newsService: NewsService) { }
 
-    segmentChanged(event: any) {
-        
+    ngOnInit(): void {
+        this.getTopHeadLinesByCategory(this.selectedCategory);
+    }
+
+    segmentChanged(event: Event) {
+        this.selectedCategory = (event as CustomEvent).detail.value;
+        this.getTopHeadLinesByCategory(this.selectedCategory);
+    }
+
+    getTopHeadLinesByCategory(category: string) {
+        this.newsService.getTopHeadLinesByCategory(category)
+            .subscribe(articles => {
+                this.articles = [...articles];
+            });
+    }
+
+    loadData() {
+        this.newsService.getTopHeadLinesByCategory(this.selectedCategory, true)
+            .subscribe(articles => {
+                if (articles.length === this.articles.length) {
+                    this.infiniteScroll.disabled = true;
+                    return;
+                }
+                
+                this.articles = articles;
+                this.infiniteScroll.complete();
+            })
     }
 }

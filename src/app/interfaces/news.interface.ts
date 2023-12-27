@@ -4,6 +4,17 @@
 //
 //   "Set quicktype target language"
 
+// export const categories = [
+//     'business',
+//     'entertainment',
+//     'general',
+//     'health',
+//     'science',
+//     'sports',
+//     'technology',
+// ] as const;
+// export type Category = typeof categories[number];
+
 export interface NewsResponse {
     status: string;
     totalResults: number;
@@ -24,4 +35,11 @@ export interface Article {
 export interface Source {
     id: null | string;
     name: string;
+}
+
+export interface ShownArticles {
+    [key: string]: {
+        page: number,
+        articles: Article[],
+    }
 }
