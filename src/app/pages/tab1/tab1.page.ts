@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonCard, IonCardSubtitle, IonRow, IonCol, IonCardTitle, IonImg, IonCardContent } from '@ionic/angular/standalone';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { NewsService } from 'src/app/services/news.service';
 import { Article } from 'src/app/interfaces/news.interface';
 import { CommonModule } from '@angular/common';
@@ -16,12 +16,15 @@ import { ArticlesComponent } from 'src/app/components/articles/articles.componen
         IonToolbar,
         IonTitle,
         IonContent,
+        IonInfiniteScroll,
+        IonInfiniteScrollContent,
         ArticlesComponent,
     ],
 })
 export class Tab1Page implements OnInit {
 
     articles: Article[] = [];
+    @ViewChild(IonInfiniteScroll, { static: true }) infiniteScroll!: IonInfiniteScroll;
 
     constructor(private newsService: NewsService) { }
 
@@ -29,5 +32,18 @@ export class Tab1Page implements OnInit {
         this.newsService.getTopHeadlines().subscribe(data => {
             this.articles = data;
         });
+    }
+
+    loadData() {
+        this.newsService.getTopHeadlines(true)
+            .subscribe(articles => {
+                if (articles.length === this.articles.length) {
+                    this.infiniteScroll.disabled = true;
+                    return;
+                }
+
+                this.articles = articles;
+                this.infiniteScroll.complete();
+            });
     }
 }

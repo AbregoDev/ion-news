@@ -24,8 +24,8 @@ export class NewsService {
         return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params });
     }
 
-    getTopHeadlines(): Observable<Article[]> {
-        return this.getTopHeadLinesByCategory('business');
+    getTopHeadlines(loadMore: boolean = false): Observable<Article[]> {
+        return this.getTopHeadLinesByCategory('business', loadMore);
     }
     
     getTopHeadLinesByCategory(category: string, loadMore: boolean = false): Observable<Article[]> {
