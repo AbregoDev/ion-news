@@ -12,12 +12,13 @@ import {
     IonImg,
     IonRow
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { ellipsisVerticalOutline, shareOutline, heartOutline } from 'ionicons/icons';
 
 import { Article } from 'src/app/interfaces/news.interface';
 
-import { addIcons } from 'ionicons';
-import { ellipsisVerticalOutline, shareOutline, heartOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
+import { Share } from '@capacitor/share';
 
 @Component({
     selector: 'app-article',
@@ -70,7 +71,14 @@ export class ArticleComponent {
         await actionSheet.present();
     }
 
-    shareArticle() {}
+    shareArticle() {
+        Share.share({
+            dialogTitle: 'Compartir noticia',
+            title: this.article.title + ' (Via NewsAppIonic)',
+            text: 'Mira esta noticia',
+            url: this.article.url,
+        });
+    }
 
     toggleFavorite() {}
 }
