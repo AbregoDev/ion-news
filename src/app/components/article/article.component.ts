@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import {
+    ActionSheetController,
     IonButton,
     IonCard,
     IonCardContent,
@@ -15,7 +16,7 @@ import {
 import { Article } from 'src/app/interfaces/news.interface';
 
 import { addIcons } from 'ionicons';
-import { ellipsisVerticalOutline } from 'ionicons/icons';
+import { ellipsisVerticalOutline, shareOutline, heartOutline } from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 
 @Component({
@@ -41,13 +42,35 @@ export class ArticleComponent {
     @Input() index: number = 0;
     @Input() article!: Article;
 
-    constructor() {
-        addIcons({ ellipsisVerticalOutline });
+    constructor(private actionSheetCtrl: ActionSheetController) {
+        addIcons({ ellipsisVerticalOutline, shareOutline, heartOutline });
     }
 
     openArticle() {
         Browser.open({ url: this.article.url });
     }
 
-    openOptions() { }
+    async openOptions() {
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: 'Opciones',
+            buttons: [
+                {
+                    text: 'Compartir',
+                    icon: 'share-outline',
+                    handler: () => this.shareArticle(),
+                },
+                {
+                    text: 'Favorito',
+                    icon: 'heart-outline',
+                    handler: () => this.toggleFavorite(),
+                }
+            ]
+        });
+
+        await actionSheet.present();
+    }
+
+    shareArticle() {}
+
+    toggleFavorite() {}
 }
