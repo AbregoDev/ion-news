@@ -12,7 +12,12 @@ import {
     IonImg,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { ellipsisVerticalOutline, shareOutline, heartOutline } from 'ionicons/icons';
+import {
+    ellipsisVerticalOutline,
+    shareOutline,
+    heartOutline,
+    heart,
+} from 'ionicons/icons';
 import { Browser } from '@capacitor/browser';
 import { Share } from '@capacitor/share';
 
@@ -44,7 +49,12 @@ export class ArticleComponent {
         private actionSheetCtrl: ActionSheetController,
         private storageService: StorageService,
     ) {
-        addIcons({ ellipsisVerticalOutline, shareOutline, heartOutline });
+        addIcons({
+            ellipsisVerticalOutline,
+            shareOutline,
+            heartOutline,
+            heart,
+        });
     }
 
     openArticle() {
@@ -52,19 +62,21 @@ export class ArticleComponent {
     }
 
     async openOptions() {
+        const isFavorite = this.storageService.isArticleInFavorites(this.article);
+
         const actionSheet = await this.actionSheetCtrl.create({
             header: 'Opciones',
             buttons: [
+                {
+                    text: isFavorite ? 'Eliminar favorito' : 'Favorito',
+                    icon: isFavorite ? 'heart' : 'heart-outline',
+                    handler: () => this.toggleFavorite(),
+                },
                 {
                     text: 'Compartir',
                     icon: 'share-outline',
                     handler: () => this.shareArticle(),
                 },
-                {
-                    text: 'Favorito',
-                    icon: 'heart-outline',
-                    handler: () => this.toggleFavorite(),
-                }
             ]
         });
 

@@ -46,4 +46,8 @@ export class StorageService {
             this._articles = articles || [];
         } catch(error) { }
     }
+
+    isArticleInFavorites(article: Article): boolean {
+        return this._articles.some(localArticle => localArticle.title === article.title);
+    }
 }
