@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Article, NewsResponse, ShownArticles } from '../interfaces/news.interface';
 import { Observable, map, of } from 'rxjs';
+import { storedArticlesByCategory } from '../data/mock-news';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ export class NewsService {
     readonly baseUrl = 'https://newsapi.org/v2';
     readonly country = 'us';
 
-    private shownArticles: ShownArticles = { };
+    private shownArticles: ShownArticles = storedArticlesByCategory;
 
     constructor(private readonly http: HttpClient) { }
 
@@ -29,11 +30,13 @@ export class NewsService {
     }
     
     getTopHeadLinesByCategory(category: string, loadMore: boolean = false): Observable<Article[]> {
+        const categoryArticlesShown = this.shownArticles[category];
+        return of(categoryArticlesShown.articles);
+        
         if (loadMore) {
             return this.getArticlesByCategory(category);
         }
 
-        const categoryArticlesShown = this.shownArticles[category];
         if (categoryArticlesShown) {
             return of(categoryArticlesShown.articles);
         }
