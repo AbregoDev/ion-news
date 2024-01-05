@@ -1,0 +1,11 @@
+.header {
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .article-source {
+        padding-left: 16px;
+        flex-grow: 1;
+    }
+}

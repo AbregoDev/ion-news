@@ -1,30 +1,30 @@
 <ion-card>
-    <ion-card-subtitle class="ion-margin">
-        <ion-row>
-            <ion-col class="ion-margin" (click)="openArticle()">
+    <ion-card-subtitle>
+        <div class="header">
+            <div class="article-source">
                 <span class="text-primary">{{ index }}. </span>
                 <span class="article-source-name">{{ article.source.name }}</span>
-            </ion-col>
+            </div>
 
-            <ion-col>
-                <ion-button (click)="openOptions()" fill="clear">
-                    <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
-                </ion-button>
-            </ion-col>
-        </ion-row>
+            <ion-button (click)="openOptions()" fill="clear">
+                <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+            </ion-button>
+        </div>
     </ion-card-subtitle>
 
-    <ion-card-title class="ion-padding-horizontal ion-margin-bottom">
-        {{ article.title }}
-    </ion-card-title>
-
-    <ion-img
-        *ngIf="article.urlToImage"
-        [src]="article.urlToImage"
-        (click)="openArticle()">
-    </ion-img>
-
-    <ion-card-content *ngIf="article.description">
-        <p>{{ article.description }}</p>
-    </ion-card-content>
+    <main (click)="openArticle()">
+        <ion-card-title class="ion-padding-horizontal ion-margin-bottom">
+            {{ article.title }}
+        </ion-card-title>
+    
+        <ion-img
+            *ngIf="article.urlToImage"
+            [src]="article.urlToImage"
+            >
+        </ion-img>
+    
+        <ion-card-content *ngIf="article.description">
+            <p>{{ article.description }}</p>
+        </ion-card-content>
+    </main>
 </ion-card>

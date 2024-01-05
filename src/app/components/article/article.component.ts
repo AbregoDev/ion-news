@@ -8,10 +8,8 @@ import {
     IonCardContent,
     IonCardSubtitle,
     IonCardTitle,
-    IonCol,
     IonIcon,
     IonImg,
-    IonRow
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { ellipsisVerticalOutline, shareOutline, heartOutline } from 'ionicons/icons';
@@ -33,8 +31,6 @@ import { StorageService } from 'src/app/services/storage.service';
         IonCardTitle,
         IonCardContent,
         IonImg,
-        IonRow,
-        IonCol,
         IonButton,
         IonIcon,
     ],
