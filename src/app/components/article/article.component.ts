@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+
 import {
     ActionSheetController,
     IonButton,
@@ -14,11 +15,11 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { ellipsisVerticalOutline, shareOutline, heartOutline } from 'ionicons/icons';
-
-import { Article } from 'src/app/interfaces/news.interface';
-
 import { Browser } from '@capacitor/browser';
 import { Share } from '@capacitor/share';
+
+import { Article } from 'src/app/interfaces/news.interface';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
     selector: 'app-article',
@@ -43,7 +44,10 @@ export class ArticleComponent {
     @Input() index: number = 0;
     @Input() article!: Article;
 
-    constructor(private actionSheetCtrl: ActionSheetController) {
+    constructor(
+        private actionSheetCtrl: ActionSheetController,
+        private storageService: StorageService,
+    ) {
         addIcons({ ellipsisVerticalOutline, shareOutline, heartOutline });
     }
 
@@ -80,5 +84,7 @@ export class ArticleComponent {
         });
     }
 
-    toggleFavorite() {}
+    toggleFavorite() {
+        this.storageService.saveRemoveArticle(this.article);
+    }
 }
