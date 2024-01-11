@@ -52,6 +52,9 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Firebase
+.firebase
+
 
 # Miscellaneous
 /.angular
